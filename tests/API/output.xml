@@ -1,0 +1,686 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.2.2 (Python 3.13.2 on win32)" generated="2025-03-12T16:52:32.941067" rpa="false" schemaversion="5">
+<suite id="s1" name="Products" source="C:\Users\Yuri\Desktop\qa-serverest-yuri-galdino\tests\API\products.robot">
+<test id="s1-t1" name="Add New Product" line="37">
+<kw name="Given a new product payload">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2025-03-12T16:52:33.487360" level="INFO">${payload} = {'nome': 'Óculos Mormaii', 'preco': '199', 'descricao': 'Óculos de sol Mormaii cor preta', 'quantidade': '3'}</msg>
+<var>${payload}</var>
+<arg>nome=${PRODUCT_NAME}</arg>
+<arg>preco=${PRODUCT_PRICE}</arg>
+<arg>descricao=${PRODUCT_DESCRIPTION}</arg>
+<arg>quantidade=${PRODUCT_QUANTITY}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2025-03-12T16:52:33.486996" elapsed="0.000402"/>
+</kw>
+<kw name="Set Suite Variable" owner="BuiltIn">
+<msg time="2025-03-12T16:52:33.487710" level="INFO">${payload} = {'nome': 'Óculos Mormaii', 'preco': '199', 'descricao': 'Óculos de sol Mormaii cor preta', 'quantidade': '3'}</msg>
+<arg>${payload}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<status status="PASS" start="2025-03-12T16:52:33.487549" elapsed="0.000204"/>
+</kw>
+<doc>Create a payload for a new product</doc>
+<status status="PASS" start="2025-03-12T16:52:33.486705" elapsed="0.001113"/>
+</kw>
+<kw name="Get Auth Token" owner="product_ep_keywords">
+<kw name="Create Session" owner="RequestsLibrary">
+<msg time="2025-03-12T16:52:33.488440" level="INFO">Creating Session using : alias=serverest, url=https://serverest.dev, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<arg>serverest</arg>
+<arg>${BASE_URL}</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<status status="PASS" start="2025-03-12T16:52:33.488302" elapsed="0.000303"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2025-03-12T16:52:33.488910" level="INFO">${payload} = {'email': 'yuri@admin.com', 'password': '321'}</msg>
+<var>${payload}</var>
+<arg>email=${ADMIN_EMAIL}</arg>
+<arg>password=${ADMIN_PASSWORD}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2025-03-12T16:52:33.488713" elapsed="0.000222"/>
+</kw>
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2025-03-12T16:52:33.858725" level="INFO">GET Request : url=https://serverest.dev/usuarios?email=yuri@admin.com 
+ path_url=/usuarios?email=yuri@admin.com 
+ headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg time="2025-03-12T16:52:33.858873" level="INFO">GET Response : url=https://serverest.dev/usuarios?email=yuri@admin.com 
+ status=200, reason=OK 
+ headers={'access-control-allow-origin': '*', 'x-dns-prefetch-control': 'off', 'x-frame-options': 'SAMEORIGIN', 'strict-transport-security': 'max-age=15552000; includeSubDomains', 'x-download-options': 'noopen', 'x-content-type-options': 'nosniff', 'x-xss-protection': '1; mode=block', 'content-type': 'application/json; charset=utf-8', 'X-Cloud-Trace-Context': '027c293cdba56da412c1902ac063b813;o=1', 'Date': 'Wed, 12 Mar 2025 19:52:33 GMT', 'Server': 'Google Frontend', 'Content-Length': '252'} 
+ body={
+    "quantidade": 1,
+    "usuarios": [
+        {
+            "nome": "Yuri Test Admin",
+            "email": "yuri@admin.com",
+            "password": "321",
+            "administrador": "true",
+            "_id": "33q01mNbnfgUu9vI"
+        }
+    ]
+} 
+ </msg>
+<msg time="2025-03-12T16:52:33.858959" level="INFO">C:\Users\Yuri\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'serverest.dev'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2025-03-12T16:52:33.860045" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>serverest</arg>
+<arg>url=/usuarios</arg>
+<arg>params=email=${ADMIN_EMAIL}</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2025-03-12T16:52:33.489038" elapsed="0.371049"/>
+</kw>
+<kw name="Evaluate" owner="BuiltIn">
+<msg time="2025-03-12T16:52:33.861166" level="INFO">${user_exists} = True</msg>
+<var>${user_exists}</var>
+<arg>len(${response.json()['usuarios']}) &gt; 0</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="PASS" start="2025-03-12T16:52:33.860300" elapsed="0.000903"/>
+</kw>
+<if>
+<branch type="IF" condition="${user_exists}">
+<kw name="Log To Console" owner="BuiltIn">
+<arg>**INFO: Admin user already exists**</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2025-03-12T16:52:33.861505" elapsed="0.000253"/>
+</kw>
+<status status="PASS" start="2025-03-12T16:52:33.861326" elapsed="0.000502"/>
+</branch>
+<branch type="ELSE">
+<kw name="Create Admin User" owner="product_ep_keywords">
+<doc>Create the admin user if it does not exist</doc>
+<status status="NOT RUN" start="2025-03-12T16:52:33.862080" elapsed="0.000038"/>
+</kw>
+<status status="NOT RUN" start="2025-03-12T16:52:33.861888" elapsed="0.000278"/>
+</branch>
+<status status="PASS" start="2025-03-12T16:52:33.861293" elapsed="0.000915"/>
+</if>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2025-03-12T16:52:34.033209" level="INFO">POST Request : url=https://serverest.dev/login 
+ path_url=/login 
+ headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '46', 'Content-Type': 'application/json'} 
+ body=b'{"email": "yuri@admin.com", "password": "321"}' 
+ </msg>
+<msg time="2025-03-12T16:52:34.033300" level="INFO">POST Response : url=https://serverest.dev/login 
+ status=200, reason=OK 
+ headers={'access-control-allow-origin': '*', 'x-dns-prefetch-control': 'off', 'x-frame-options': 'SAMEORIGIN', 'strict-transport-security': 'max-age=15552000; includeSubDomains', 'x-download-options': 'noopen', 'x-content-type-options': 'nosniff', 'x-xss-protection': '1; mode=block', 'content-type': 'application/json; charset=utf-8', 'X-Cloud-Trace-Context': '31661a42624c0e4812c1902ac063beb7', 'Date': 'Wed, 12 Mar 2025 19:52:34 GMT', 'Server': 'Google Frontend', 'Content-Length': '264'} 
+ body={
+    "message": "Login realizado com sucesso",
+    "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inl1cmlAYWRtaW4uY29tIiwicGFzc3dvcmQiOiIzMjEiLCJpYXQiOjE3NDE4MDkxNTQsImV4cCI6MTc0MTgwOTc1NH0.5C2UZzlsAQeii20C-TgOPkjHrWegB5SIDL4UekF3LE0"
+} 
+ </msg>
+<msg time="2025-03-12T16:52:34.033368" level="INFO">C:\Users\Yuri\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'serverest.dev'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2025-03-12T16:52:34.033995" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>serverest</arg>
+<arg>/login</arg>
+<arg>json=${payload}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2025-03-12T16:52:33.862330" elapsed="0.171719"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>**INFO: POST Response : ${response.status_code}, ${response.reason}**</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2025-03-12T16:52:34.034246" elapsed="0.001164"/>
+</kw>
+<kw name="HTTP Response Status Code Should Be 200 OK" owner="common">
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<msg time="2025-03-12T16:52:34.036707" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="PASS" start="2025-03-12T16:52:34.036113" elapsed="0.000647"/>
+</kw>
+<arg>${response}</arg>
+<doc>Check whether response status code is 200 OK</doc>
+<status status="PASS" start="2025-03-12T16:52:34.035645" elapsed="0.001188"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2025-03-12T16:52:34.037451" level="INFO">${BEARER_TOKEN} = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inl1cmlAYWRtaW4uY29tIiwicGFzc3dvcmQiOiIzMjEiLCJpYXQiOjE3NDE4MDkxNTQsImV4cCI6MTc0MTgwOTc1NH0.5C2UZzlsAQeii20C-TgOPkjHrWegB5SIDL4UekF3LE0</msg>
+<var>${BEARER_TOKEN}</var>
+<arg>${response.json()['authorization']}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="PASS" start="2025-03-12T16:52:34.036938" elapsed="0.000542"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>**INFO: BEARER_TOKEN retrieved: ${BEARER_TOKEN}**</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2025-03-12T16:52:34.037590" elapsed="0.000345"/>
+</kw>
+<return>
+<value>${BEARER_TOKEN}</value>
+<status status="PASS" start="2025-03-12T16:52:34.038000" elapsed="0.000053"/>
+</return>
+<msg time="2025-03-12T16:52:34.038173" level="INFO">${BEARER_TOKEN} = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inl1cmlAYWRtaW4uY29tIiwicGFzc3dvcmQiOiIzMjEiLCJpYXQiOjE3NDE4MDkxNTQsImV4cCI6MTc0MTgwOTc1NH0.5C2UZzlsAQeii20C-TgOPkjHrWegB5SIDL4UekF3LE0</msg>
+<var>${BEARER_TOKEN}</var>
+<doc>Ensure the admin user exists and retrieve the authentication token</doc>
+<status status="PASS" start="2025-03-12T16:52:33.488120" elapsed="0.550079"/>
+</kw>
+<kw name="Set Suite Variable" owner="BuiltIn">
+<msg time="2025-03-12T16:52:34.038533" level="INFO">${TOKEN} = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inl1cmlAYWRtaW4uY29tIiwicGFzc3dvcmQiOiIzMjEiLCJpYXQiOjE3NDE4MDkxNTQsImV4cCI6MTc0MTgwOTc1NH0.5C2UZzlsAQeii20C-TgOPkjHrWegB5SIDL4UekF3LE0</msg>
+<arg>${TOKEN}</arg>
+<arg>${BEARER_TOKEN}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<status status="PASS" start="2025-03-12T16:52:34.038378" elapsed="0.000199"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2025-03-12T16:52:34.039008" level="INFO">${payload} = {'nome': 'Óculos Mormaii', 'preco': '199', 'descricao': 'Óculos de sol Mormaii cor preta', 'quantidade': '3'}</msg>
+<var>${payload}</var>
+<arg>nome=${PRODUCT_NAME}</arg>
+<arg>preco=${PRODUCT_PRICE}</arg>
+<arg>descricao=${PRODUCT_DESCRIPTION}</arg>
+<arg>quantidade=${PRODUCT_QUANTITY}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2025-03-12T16:52:34.038736" elapsed="0.000299"/>
+</kw>
+<kw name="When the product is added">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2025-03-12T16:52:34.039613" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inl1cmlAYWRtaW4uY29tIiwicGFzc3dvcmQiOiIzMjEiLCJpYXQiOjE3NDE4MDkxNTQsImV4cCI6MTc0MTgwOTc1NH0.5C2UZzlsAQeii20C-TgOPkjHrWegB5SID...</msg>
+<var>${headers}</var>
+<arg>Authorization=${TOKEN}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2025-03-12T16:52:34.039450" elapsed="0.000191"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2025-03-12T16:52:34.210323" level="INFO">POST Request : url=https://serverest.dev/produtos 
+ path_url=/produtos 
+ headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inl1cmlAYWRtaW4uY29tIiwicGFzc3dvcmQiOiIzMjEiLCJpYXQiOjE3NDE4MDkxNTQsImV4cCI6MTc0MTgwOTc1NH0.5C2UZzlsAQeii20C-TgOPkjHrWegB5SIDL4UekF3LE0', 'Content-Length': '119', 'Content-Type': 'application/json'} 
+ body=b'{"nome": "\\u00d3culos Mormaii", "preco": "199", "descricao": "\\u00d3culos de sol Mormaii cor preta", "quantidade": "3"}' 
+ </msg>
+<msg time="2025-03-12T16:52:34.210413" level="INFO">POST Response : url=https://serverest.dev/produtos 
+ status=201, reason=Created 
+ headers={'access-control-allow-origin': '*', 'x-dns-prefetch-control': 'off', 'x-frame-options': 'SAMEORIGIN', 'strict-transport-security': 'max-age=15552000; includeSubDomains', 'x-download-options': 'noopen', 'x-content-type-options': 'nosniff', 'x-xss-protection': '1; mode=block', 'content-type': 'application/json; charset=utf-8', 'X-Cloud-Trace-Context': '7b7db6b45b2de87e12c1902ac063b217', 'Date': 'Wed, 12 Mar 2025 19:52:34 GMT', 'Server': 'Google Frontend', 'Content-Length': '82'} 
+ body={
+    "message": "Cadastro realizado com sucesso",
+    "_id": "BZoVzimW6ZS7nvin"
+} 
+ </msg>
+<msg time="2025-03-12T16:52:34.210476" level="INFO">C:\Users\Yuri\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'serverest.dev'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2025-03-12T16:52:34.210982" level="INFO">${response} = &lt;Response [201]&gt;</msg>
+<var>${response}</var>
+<arg>serverest</arg>
+<arg>/produtos</arg>
+<arg>json=${payload}</arg>
+<arg>headers=${headers}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2025-03-12T16:52:34.039743" elapsed="0.171269"/>
+</kw>
+<kw name="Set Suite Variable" owner="BuiltIn">
+<msg time="2025-03-12T16:52:34.211352" level="INFO">${response} = &lt;Response [201]&gt;</msg>
+<arg>${response}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<status status="PASS" start="2025-03-12T16:52:34.211192" elapsed="0.000198"/>
+</kw>
+<kw name="HTTP Response Status Code Should Be 201 OK" owner="common">
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<msg time="2025-03-12T16:52:34.212268" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${response.status_code}</arg>
+<arg>201</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="PASS" start="2025-03-12T16:52:34.211756" elapsed="0.000560"/>
+</kw>
+<arg>${response}</arg>
+<doc>Check whether response status code is 201 OK</doc>
+<status status="PASS" start="2025-03-12T16:52:34.211518" elapsed="0.000858"/>
+</kw>
+<kw name="Get From Dictionary" owner="Collections">
+<msg time="2025-03-12T16:52:34.212991" level="INFO">${PRODUCT_ID_JSON} = BZoVzimW6ZS7nvin</msg>
+<var>${PRODUCT_ID_JSON}</var>
+<arg>${response.json()}</arg>
+<arg>_id</arg>
+<doc>Returns a value from the given ``dictionary`` based on the given ``key``.</doc>
+<status status="PASS" start="2025-03-12T16:52:34.212474" elapsed="0.000544"/>
+</kw>
+<kw name="Set Suite Variable" owner="BuiltIn">
+<msg time="2025-03-12T16:52:34.213269" level="INFO">${PRODUCT_ID} = BZoVzimW6ZS7nvin</msg>
+<arg>${PRODUCT_ID}</arg>
+<arg>${PRODUCT_ID_JSON}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<status status="PASS" start="2025-03-12T16:52:34.213124" elapsed="0.000182"/>
+</kw>
+<doc>Add the product using the payload</doc>
+<status status="PASS" start="2025-03-12T16:52:34.039264" elapsed="0.174099"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>**INFO: Product created with ID ${PRODUCT_ID}**</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2025-03-12T16:52:34.213522" elapsed="0.000215"/>
+</kw>
+<doc>Test adding a new product</doc>
+<tag>API</tag>
+<status status="PASS" start="2025-03-12T16:52:33.485509" elapsed="0.728392"/>
+</test>
+<test id="s1-t2" name="Get Product" line="47">
+<kw name="Get Auth Token" owner="product_ep_keywords">
+<kw name="Create Session" owner="RequestsLibrary">
+<msg time="2025-03-12T16:52:34.215052" level="INFO">Creating Session using : alias=serverest, url=https://serverest.dev, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<arg>serverest</arg>
+<arg>${BASE_URL}</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<status status="PASS" start="2025-03-12T16:52:34.214949" elapsed="0.000226"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2025-03-12T16:52:34.215479" level="INFO">${payload} = {'email': 'yuri@admin.com', 'password': '321'}</msg>
+<var>${payload}</var>
+<arg>email=${ADMIN_EMAIL}</arg>
+<arg>password=${ADMIN_PASSWORD}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2025-03-12T16:52:34.215283" elapsed="0.000221"/>
+</kw>
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2025-03-12T16:52:34.571991" level="INFO">GET Request : url=https://serverest.dev/usuarios?email=yuri@admin.com 
+ path_url=/usuarios?email=yuri@admin.com 
+ headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg time="2025-03-12T16:52:34.572090" level="INFO">GET Response : url=https://serverest.dev/usuarios?email=yuri@admin.com 
+ status=200, reason=OK 
+ headers={'access-control-allow-origin': '*', 'x-dns-prefetch-control': 'off', 'x-frame-options': 'SAMEORIGIN', 'strict-transport-security': 'max-age=15552000; includeSubDomains', 'x-download-options': 'noopen', 'x-content-type-options': 'nosniff', 'x-xss-protection': '1; mode=block', 'content-type': 'application/json; charset=utf-8', 'X-Cloud-Trace-Context': '8c33982ffe8d651227ff2fcb30f5460b', 'Date': 'Wed, 12 Mar 2025 19:52:34 GMT', 'Server': 'Google Frontend', 'Content-Length': '252'} 
+ body={
+    "quantidade": 1,
+    "usuarios": [
+        {
+            "nome": "Yuri Test Admin",
+            "email": "yuri@admin.com",
+            "password": "321",
+            "administrador": "true",
+            "_id": "33q01mNbnfgUu9vI"
+        }
+    ]
+} 
+ </msg>
+<msg time="2025-03-12T16:52:34.572162" level="INFO">C:\Users\Yuri\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'serverest.dev'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2025-03-12T16:52:34.572891" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>serverest</arg>
+<arg>url=/usuarios</arg>
+<arg>params=email=${ADMIN_EMAIL}</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2025-03-12T16:52:34.215602" elapsed="0.357320"/>
+</kw>
+<kw name="Evaluate" owner="BuiltIn">
+<msg time="2025-03-12T16:52:34.573722" level="INFO">${user_exists} = True</msg>
+<var>${user_exists}</var>
+<arg>len(${response.json()['usuarios']}) &gt; 0</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="PASS" start="2025-03-12T16:52:34.573091" elapsed="0.000658"/>
+</kw>
+<if>
+<branch type="IF" condition="${user_exists}">
+<kw name="Log To Console" owner="BuiltIn">
+<arg>**INFO: Admin user already exists**</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2025-03-12T16:52:34.573964" elapsed="0.000174"/>
+</kw>
+<status status="PASS" start="2025-03-12T16:52:34.573838" elapsed="0.000343"/>
+</branch>
+<branch type="ELSE">
+<kw name="Create Admin User" owner="product_ep_keywords">
+<doc>Create the admin user if it does not exist</doc>
+<status status="NOT RUN" start="2025-03-12T16:52:34.574350" elapsed="0.000026"/>
+</kw>
+<status status="NOT RUN" start="2025-03-12T16:52:34.574218" elapsed="0.000191"/>
+</branch>
+<status status="PASS" start="2025-03-12T16:52:34.573815" elapsed="0.000623"/>
+</if>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2025-03-12T16:52:34.744594" level="INFO">POST Request : url=https://serverest.dev/login 
+ path_url=/login 
+ headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '46', 'Content-Type': 'application/json'} 
+ body=b'{"email": "yuri@admin.com", "password": "321"}' 
+ </msg>
+<msg time="2025-03-12T16:52:34.744676" level="INFO">POST Response : url=https://serverest.dev/login 
+ status=200, reason=OK 
+ headers={'access-control-allow-origin': '*', 'x-dns-prefetch-control': 'off', 'x-frame-options': 'SAMEORIGIN', 'strict-transport-security': 'max-age=15552000; includeSubDomains', 'x-download-options': 'noopen', 'x-content-type-options': 'nosniff', 'x-xss-protection': '1; mode=block', 'content-type': 'application/json; charset=utf-8', 'X-Cloud-Trace-Context': '6ad4066f38dcc21127ff2fcb30f54b78', 'Date': 'Wed, 12 Mar 2025 19:52:34 GMT', 'Server': 'Google Frontend', 'Content-Length': '264'} 
+ body={
+    "message": "Login realizado com sucesso",
+    "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inl1cmlAYWRtaW4uY29tIiwicGFzc3dvcmQiOiIzMjEiLCJpYXQiOjE3NDE4MDkxNTQsImV4cCI6MTc0MTgwOTc1NH0.5C2UZzlsAQeii20C-TgOPkjHrWegB5SIDL4UekF3LE0"
+} 
+ </msg>
+<msg time="2025-03-12T16:52:34.744736" level="INFO">C:\Users\Yuri\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'serverest.dev'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2025-03-12T16:52:34.745440" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>serverest</arg>
+<arg>/login</arg>
+<arg>json=${payload}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2025-03-12T16:52:34.574535" elapsed="0.170956"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>**INFO: POST Response : ${response.status_code}, ${response.reason}**</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2025-03-12T16:52:34.745676" elapsed="0.001356"/>
+</kw>
+<kw name="HTTP Response Status Code Should Be 200 OK" owner="common">
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<msg time="2025-03-12T16:52:34.748121" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="PASS" start="2025-03-12T16:52:34.747459" elapsed="0.000739"/>
+</kw>
+<arg>${response}</arg>
+<doc>Check whether response status code is 200 OK</doc>
+<status status="PASS" start="2025-03-12T16:52:34.747212" elapsed="0.001083"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2025-03-12T16:52:34.749214" level="INFO">${BEARER_TOKEN} = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inl1cmlAYWRtaW4uY29tIiwicGFzc3dvcmQiOiIzMjEiLCJpYXQiOjE3NDE4MDkxNTQsImV4cCI6MTc0MTgwOTc1NH0.5C2UZzlsAQeii20C-TgOPkjHrWegB5SIDL4UekF3LE0</msg>
+<var>${BEARER_TOKEN}</var>
+<arg>${response.json()['authorization']}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="PASS" start="2025-03-12T16:52:34.748450" elapsed="0.000806"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>**INFO: BEARER_TOKEN retrieved: ${BEARER_TOKEN}**</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2025-03-12T16:52:34.749393" elapsed="0.000342"/>
+</kw>
+<return>
+<value>${BEARER_TOKEN}</value>
+<status status="PASS" start="2025-03-12T16:52:34.749843" elapsed="0.000065"/>
+</return>
+<msg time="2025-03-12T16:52:34.750124" level="INFO">${BEARER_TOKEN} = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inl1cmlAYWRtaW4uY29tIiwicGFzc3dvcmQiOiIzMjEiLCJpYXQiOjE3NDE4MDkxNTQsImV4cCI6MTc0MTgwOTc1NH0.5C2UZzlsAQeii20C-TgOPkjHrWegB5SIDL4UekF3LE0</msg>
+<var>${BEARER_TOKEN}</var>
+<doc>Ensure the admin user exists and retrieve the authentication token</doc>
+<status status="PASS" start="2025-03-12T16:52:34.214773" elapsed="0.535389"/>
+</kw>
+<kw name="Set Suite Variable" owner="BuiltIn">
+<msg time="2025-03-12T16:52:34.750531" level="INFO">${TOKEN} = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inl1cmlAYWRtaW4uY29tIiwicGFzc3dvcmQiOiIzMjEiLCJpYXQiOjE3NDE4MDkxNTQsImV4cCI6MTc0MTgwOTc1NH0.5C2UZzlsAQeii20C-TgOPkjHrWegB5SIDL4UekF3LE0</msg>
+<arg>${TOKEN}</arg>
+<arg>${BEARER_TOKEN}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<status status="PASS" start="2025-03-12T16:52:34.750374" elapsed="0.000200"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2025-03-12T16:52:34.751120" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inl1cmlAYWRtaW4uY29tIiwicGFzc3dvcmQiOiIzMjEiLCJpYXQiOjE3NDE4MDkxNTQsImV4cCI6MTc0MTgwOTc1NH0.5C2UZzlsAQeii20C-TgOPkjHrWegB5SID...</msg>
+<var>${headers}</var>
+<arg>Authorization=${TOKEN}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2025-03-12T16:52:34.750833" elapsed="0.000331"/>
+</kw>
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2025-03-12T16:52:34.937191" level="INFO">GET Request : url=https://serverest.dev/produtos/BZoVzimW6ZS7nvin 
+ path_url=/produtos/BZoVzimW6ZS7nvin 
+ headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inl1cmlAYWRtaW4uY29tIiwicGFzc3dvcmQiOiIzMjEiLCJpYXQiOjE3NDE4MDkxNTQsImV4cCI6MTc0MTgwOTc1NH0.5C2UZzlsAQeii20C-TgOPkjHrWegB5SIDL4UekF3LE0'} 
+ body=None 
+ </msg>
+<msg time="2025-03-12T16:52:34.937287" level="INFO">GET Response : url=https://serverest.dev/produtos/BZoVzimW6ZS7nvin 
+ status=200, reason=OK 
+ headers={'access-control-allow-origin': '*', 'x-dns-prefetch-control': 'off', 'x-frame-options': 'SAMEORIGIN', 'strict-transport-security': 'max-age=15552000; includeSubDomains', 'x-download-options': 'noopen', 'x-content-type-options': 'nosniff', 'x-xss-protection': '1; mode=block', 'content-type': 'application/json; charset=utf-8', 'X-Cloud-Trace-Context': '527275e94fd4783827ff2fcb30f5492a', 'Date': 'Wed, 12 Mar 2025 19:52:34 GMT', 'Server': 'Google Frontend', 'Content-Length': '156'} 
+ body={
+    "nome": "Óculos Mormaii",
+    "preco": 199,
+    "descricao": "Óculos de sol Mormaii cor preta",
+    "quantidade": 3,
+    "_id": "BZoVzimW6ZS7nvin"
+} 
+ </msg>
+<msg time="2025-03-12T16:52:34.937357" level="INFO">C:\Users\Yuri\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'serverest.dev'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2025-03-12T16:52:34.938000" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>serverest</arg>
+<arg>/produtos/${PRODUCT_ID}</arg>
+<arg>headers=${headers}</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2025-03-12T16:52:34.751406" elapsed="0.186653"/>
+</kw>
+<kw name="HTTP Response Status Code Should Be 200 OK" owner="common">
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<msg time="2025-03-12T16:52:34.939355" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="PASS" start="2025-03-12T16:52:34.938750" elapsed="0.000666"/>
+</kw>
+<arg>${response}</arg>
+<doc>Check whether response status code is 200 OK</doc>
+<status status="PASS" start="2025-03-12T16:52:34.938416" elapsed="0.001078"/>
+</kw>
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${response.json()['nome']}</arg>
+<arg>${PRODUCT_NAME}</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="PASS" start="2025-03-12T16:52:34.939728" elapsed="0.000648"/>
+</kw>
+<kw name="Should Be Equal As Numbers" owner="BuiltIn">
+<msg time="2025-03-12T16:52:34.941164" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${response.json()['preco']}</arg>
+<arg>${PRODUCT_PRICE}</arg>
+<doc>Fails if objects are unequal after converting them to real numbers.</doc>
+<status status="PASS" start="2025-03-12T16:52:34.940563" elapsed="0.000668"/>
+</kw>
+<doc>Test getting the specific product</doc>
+<tag>API</tag>
+<status status="PASS" start="2025-03-12T16:52:34.214372" elapsed="0.727028"/>
+</test>
+<test id="s1-t3" name="Delete Product" line="58">
+<kw name="Get Auth Token" owner="product_ep_keywords">
+<kw name="Create Session" owner="RequestsLibrary">
+<msg time="2025-03-12T16:52:34.942852" level="INFO">Creating Session using : alias=serverest, url=https://serverest.dev, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<arg>serverest</arg>
+<arg>${BASE_URL}</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<status status="PASS" start="2025-03-12T16:52:34.942726" elapsed="0.000265"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2025-03-12T16:52:34.943378" level="INFO">${payload} = {'email': 'yuri@admin.com', 'password': '321'}</msg>
+<var>${payload}</var>
+<arg>email=${ADMIN_EMAIL}</arg>
+<arg>password=${ADMIN_PASSWORD}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2025-03-12T16:52:34.943128" elapsed="0.000281"/>
+</kw>
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2025-03-12T16:52:35.293548" level="INFO">GET Request : url=https://serverest.dev/usuarios?email=yuri@admin.com 
+ path_url=/usuarios?email=yuri@admin.com 
+ headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg time="2025-03-12T16:52:35.293688" level="INFO">GET Response : url=https://serverest.dev/usuarios?email=yuri@admin.com 
+ status=200, reason=OK 
+ headers={'access-control-allow-origin': '*', 'x-dns-prefetch-control': 'off', 'x-frame-options': 'SAMEORIGIN', 'strict-transport-security': 'max-age=15552000; includeSubDomains', 'x-download-options': 'noopen', 'x-content-type-options': 'nosniff', 'x-xss-protection': '1; mode=block', 'content-type': 'application/json; charset=utf-8', 'X-Cloud-Trace-Context': '868b379717152bedd207a204321652ea', 'Date': 'Wed, 12 Mar 2025 19:52:35 GMT', 'Server': 'Google Frontend', 'Content-Length': '252'} 
+ body={
+    "quantidade": 1,
+    "usuarios": [
+        {
+            "nome": "Yuri Test Admin",
+            "email": "yuri@admin.com",
+            "password": "321",
+            "administrador": "true",
+            "_id": "33q01mNbnfgUu9vI"
+        }
+    ]
+} 
+ </msg>
+<msg time="2025-03-12T16:52:35.293788" level="INFO">C:\Users\Yuri\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'serverest.dev'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2025-03-12T16:52:35.294740" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>serverest</arg>
+<arg>url=/usuarios</arg>
+<arg>params=email=${ADMIN_EMAIL}</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2025-03-12T16:52:34.943540" elapsed="0.351255"/>
+</kw>
+<kw name="Evaluate" owner="BuiltIn">
+<msg time="2025-03-12T16:52:35.296207" level="INFO">${user_exists} = True</msg>
+<var>${user_exists}</var>
+<arg>len(${response.json()['usuarios']}) &gt; 0</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="PASS" start="2025-03-12T16:52:35.295163" elapsed="0.001092"/>
+</kw>
+<if>
+<branch type="IF" condition="${user_exists}">
+<kw name="Log To Console" owner="BuiltIn">
+<arg>**INFO: Admin user already exists**</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2025-03-12T16:52:35.296611" elapsed="0.000314"/>
+</kw>
+<status status="PASS" start="2025-03-12T16:52:35.296396" elapsed="0.000618"/>
+</branch>
+<branch type="ELSE">
+<kw name="Create Admin User" owner="product_ep_keywords">
+<doc>Create the admin user if it does not exist</doc>
+<status status="NOT RUN" start="2025-03-12T16:52:35.297322" elapsed="0.000053"/>
+</kw>
+<status status="NOT RUN" start="2025-03-12T16:52:35.297082" elapsed="0.000354"/>
+</branch>
+<status status="PASS" start="2025-03-12T16:52:35.296361" elapsed="0.001129"/>
+</if>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2025-03-12T16:52:35.459404" level="INFO">POST Request : url=https://serverest.dev/login 
+ path_url=/login 
+ headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '46', 'Content-Type': 'application/json'} 
+ body=b'{"email": "yuri@admin.com", "password": "321"}' 
+ </msg>
+<msg time="2025-03-12T16:52:35.459485" level="INFO">POST Response : url=https://serverest.dev/login 
+ status=200, reason=OK 
+ headers={'access-control-allow-origin': '*', 'x-dns-prefetch-control': 'off', 'x-frame-options': 'SAMEORIGIN', 'strict-transport-security': 'max-age=15552000; includeSubDomains', 'x-download-options': 'noopen', 'x-content-type-options': 'nosniff', 'x-xss-protection': '1; mode=block', 'content-type': 'application/json; charset=utf-8', 'X-Cloud-Trace-Context': 'e374c786c8a3b586d207a2043216513a', 'Date': 'Wed, 12 Mar 2025 19:52:35 GMT', 'Server': 'Google Frontend', 'Content-Length': '264'} 
+ body={
+    "message": "Login realizado com sucesso",
+    "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inl1cmlAYWRtaW4uY29tIiwicGFzc3dvcmQiOiIzMjEiLCJpYXQiOjE3NDE4MDkxNTUsImV4cCI6MTc0MTgwOTc1NX0.2AsJZeVQAXV53AswfGk3WC0-AV7bilzUR1Y61V74BnY"
+} 
+ </msg>
+<msg time="2025-03-12T16:52:35.459542" level="INFO">C:\Users\Yuri\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'serverest.dev'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2025-03-12T16:52:35.460143" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>serverest</arg>
+<arg>/login</arg>
+<arg>json=${payload}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2025-03-12T16:52:35.297662" elapsed="0.162533"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>**INFO: POST Response : ${response.status_code}, ${response.reason}**</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2025-03-12T16:52:35.460388" elapsed="0.001169"/>
+</kw>
+<kw name="HTTP Response Status Code Should Be 200 OK" owner="common">
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<msg time="2025-03-12T16:52:35.462478" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="PASS" start="2025-03-12T16:52:35.462008" elapsed="0.000518"/>
+</kw>
+<arg>${response}</arg>
+<doc>Check whether response status code is 200 OK</doc>
+<status status="PASS" start="2025-03-12T16:52:35.461750" elapsed="0.000839"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2025-03-12T16:52:35.463189" level="INFO">${BEARER_TOKEN} = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inl1cmlAYWRtaW4uY29tIiwicGFzc3dvcmQiOiIzMjEiLCJpYXQiOjE3NDE4MDkxNTUsImV4cCI6MTc0MTgwOTc1NX0.2AsJZeVQAXV53AswfGk3WC0-AV7bilzUR1Y61V74BnY</msg>
+<var>${BEARER_TOKEN}</var>
+<arg>${response.json()['authorization']}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="PASS" start="2025-03-12T16:52:35.462687" elapsed="0.000537"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>**INFO: BEARER_TOKEN retrieved: ${BEARER_TOKEN}**</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2025-03-12T16:52:35.463354" elapsed="0.000361"/>
+</kw>
+<return>
+<value>${BEARER_TOKEN}</value>
+<status status="PASS" start="2025-03-12T16:52:35.463801" elapsed="0.000049"/>
+</return>
+<msg time="2025-03-12T16:52:35.464027" level="INFO">${BEARER_TOKEN} = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inl1cmlAYWRtaW4uY29tIiwicGFzc3dvcmQiOiIzMjEiLCJpYXQiOjE3NDE4MDkxNTUsImV4cCI6MTc0MTgwOTc1NX0.2AsJZeVQAXV53AswfGk3WC0-AV7bilzUR1Y61V74BnY</msg>
+<var>${BEARER_TOKEN}</var>
+<doc>Ensure the admin user exists and retrieve the authentication token</doc>
+<status status="PASS" start="2025-03-12T16:52:34.942489" elapsed="0.521577"/>
+</kw>
+<kw name="Set Suite Variable" owner="BuiltIn">
+<msg time="2025-03-12T16:52:35.464424" level="INFO">${TOKEN} = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inl1cmlAYWRtaW4uY29tIiwicGFzc3dvcmQiOiIzMjEiLCJpYXQiOjE3NDE4MDkxNTUsImV4cCI6MTc0MTgwOTc1NX0.2AsJZeVQAXV53AswfGk3WC0-AV7bilzUR1Y61V74BnY</msg>
+<arg>${TOKEN}</arg>
+<arg>${BEARER_TOKEN}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<status status="PASS" start="2025-03-12T16:52:35.464278" elapsed="0.000185"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2025-03-12T16:52:35.464784" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inl1cmlAYWRtaW4uY29tIiwicGFzc3dvcmQiOiIzMjEiLCJpYXQiOjE3NDE4MDkxNTUsImV4cCI6MTc0MTgwOTc1NX0.2AsJZeVQAXV53AswfGk3WC0-AV7bilzUR...</msg>
+<var>${headers}</var>
+<arg>Authorization=${TOKEN}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2025-03-12T16:52:35.464613" elapsed="0.000196"/>
+</kw>
+<kw name="DELETE On Session" owner="RequestsLibrary">
+<msg time="2025-03-12T16:52:35.629664" level="INFO">DELETE Request : url=https://serverest.dev/produtos/BZoVzimW6ZS7nvin 
+ path_url=/produtos/BZoVzimW6ZS7nvin 
+ headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inl1cmlAYWRtaW4uY29tIiwicGFzc3dvcmQiOiIzMjEiLCJpYXQiOjE3NDE4MDkxNTUsImV4cCI6MTc0MTgwOTc1NX0.2AsJZeVQAXV53AswfGk3WC0-AV7bilzUR1Y61V74BnY', 'Content-Length': '0'} 
+ body=None 
+ </msg>
+<msg time="2025-03-12T16:52:35.629760" level="INFO">DELETE Response : url=https://serverest.dev/produtos/BZoVzimW6ZS7nvin 
+ status=200, reason=OK 
+ headers={'access-control-allow-origin': '*', 'x-dns-prefetch-control': 'off', 'x-frame-options': 'SAMEORIGIN', 'strict-transport-security': 'max-age=15552000; includeSubDomains', 'x-download-options': 'noopen', 'x-content-type-options': 'nosniff', 'x-xss-protection': '1; mode=block', 'content-type': 'application/json; charset=utf-8', 'X-Cloud-Trace-Context': 'e1b75f378e3da6add207a204321658ad', 'Date': 'Wed, 12 Mar 2025 19:52:35 GMT', 'Server': 'Google Frontend', 'Content-Length': '51'} 
+ body={
+    "message": "Registro excluído com sucesso"
+} 
+ </msg>
+<msg time="2025-03-12T16:52:35.629884" level="INFO">C:\Users\Yuri\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'serverest.dev'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2025-03-12T16:52:35.630829" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>serverest</arg>
+<arg>/produtos/${PRODUCT_ID}</arg>
+<arg>headers=${headers}</arg>
+<doc>Sends a DELETE request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2025-03-12T16:52:35.464955" elapsed="0.165921"/>
+</kw>
+<kw name="HTTP Response Status Code Should Be 200 OK" owner="common">
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<msg time="2025-03-12T16:52:35.632124" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="PASS" start="2025-03-12T16:52:35.631487" elapsed="0.000706"/>
+</kw>
+<arg>${response}</arg>
+<doc>Check whether response status code is 200 OK</doc>
+<status status="PASS" start="2025-03-12T16:52:35.631182" elapsed="0.001089"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>**INFO: Product with ID ${PRODUCT_ID} deleted**</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2025-03-12T16:52:35.632457" elapsed="0.000263"/>
+</kw>
+<doc>Test deleting the specific product</doc>
+<tag>API</tag>
+<status status="PASS" start="2025-03-12T16:52:34.941943" elapsed="0.691011"/>
+</test>
+<doc>Tests the Product API</doc>
+<status status="PASS" start="2025-03-12T16:52:32.942282" elapsed="2.691347"/>
+</suite>
+<statistics>
+<total>
+<stat pass="3" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+<stat pass="3" fail="0" skip="0">API</stat>
+</tag>
+<suite>
+<stat name="Products" id="s1" pass="3" fail="0" skip="0">Products</stat>
+</suite>
+</statistics>
+<errors>
+<msg time="2025-03-12T16:52:33.468727" level="WARN">Error in file 'C:\Users\Yuri\Desktop\qa-serverest-yuri-galdino\keywords\api\pages\product_ep_keywords.robot' on line 23: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+</errors>
+</robot>
