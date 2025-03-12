@@ -1,3 +1,3 @@
 *** Settings ***
-Resource     utils/common.robot
-Resource     pages/sign_up_and_sign_in_page.robot
+Resource    utils/common.robot
+Resource    user_access_keywords.robot

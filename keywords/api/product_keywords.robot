@@ -1,6 +1,6 @@
 *** Settings ***
-Resource    ../../../resources/imports.robot
-Resource   ../../../variables/api_locators.robot
+Resource    ../../resources/imports.robot
+Resource   ../../variables/api_locators.robot
 Library    Collections
 
 *** Keywords ***
@@ -20,7 +20,7 @@ Get Auth Token
     HTTP Response Status Code Should Be 200 OK    ${response}
     ${BEARER_TOKEN}=    Set Variable    ${response.json()['authorization']}
     Log To Console    **INFO: BEARER_TOKEN retrieved: ${BEARER_TOKEN}**
-    [Return]    ${BEARER_TOKEN}
+    RETURN    ${BEARER_TOKEN}
 
 Create Admin User
     [Documentation]    Create the admin user if it does not exist

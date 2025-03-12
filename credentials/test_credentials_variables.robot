@@ -1,5 +1,6 @@
 *** Variables ***
 
+#Credentials
 ${USER_NAME}        Yuri Test User
 ${USER_EMAIL}       yuri@test.com
 ${USER_PASSWORD}    123

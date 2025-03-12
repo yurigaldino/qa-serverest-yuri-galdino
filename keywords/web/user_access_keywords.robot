@@ -1,6 +1,6 @@
 *** Settings ***
-Resource    ../../../resources/imports.robot
-Resource   ../../../variables/web_locators.robot
+Resource    ../../resources/imports.robot
+Resource   ../../variables/web_locators.robot
 
 *** Keywords ***
 Initialization

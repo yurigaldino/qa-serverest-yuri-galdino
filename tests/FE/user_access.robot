@@ -3,7 +3,6 @@ Documentation   Tests the Login and the Sign Up of the Application
 
 Resource        ../../resources/imports.robot
 Test Setup      Initialization     ${LOGIN_URL}    ${HEADLESS}
-#Test Setup      Open Browser     ${LOGIN_URL}    chrome
 Test Teardown   Close Browser
 
 Default Tags    E2E
