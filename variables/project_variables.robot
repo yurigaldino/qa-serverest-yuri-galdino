@@ -1,4 +1,4 @@
 *** Variables ***
 
 #Set as True for HEADLESS RUN or False for GUI RUN
-${HEADLESS}     True
+${HEADLESS}     False
