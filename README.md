@@ -31,6 +31,22 @@ robot -i E2E <your path to the root of this project>
 
 Replace `<your path to the root of this project>` with the actual path to the root of this project.
 
+### Running Tests by Tags
+
+You can run tests by tags using the `-i` option. For example, to run all API tests:
+
+```sh
+robot -i API <your path to the root of this project>/tests/API
+```
+
+### Running Individual Test Cases
+
+You can run individual test cases using the `-t` option. For example, to run a specific test case:
+
+```sh
+robot -t "Name of The Test Case" <file.robot>
+```
+
 ### Headless or GUI Run
 
 It is possible to choose between a headless run or the common GUI run by changing the `HEADLESS` variable in `variables/project_variables.robot`:
@@ -49,6 +65,10 @@ Set `${HEADLESS}` to `True` for a headless run or `False` for a GUI run.
 - `tests/`: Contains the test cases for the API and frontend.
 - `resources/`: Contains the resource files used by the tests.
 - `variables/`: Contains the variable files used by the tests.
+
+## Test Robustness and Resilience
+
+The test structure is designed with a certain level of robustness and resilience. If a user or admin does not exist in the database, or if the most recent token has expired, the tests are still capable of being executed. For GET, POST, and DELETE API tests, the code always checks the necessary conditions before performing the actions. For example, when deleting a product, if the product does not exist on the platform, it will be created first, and only then will the DELETE action be performed.
 
 ## Example Commands
 
