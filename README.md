@@ -1,6 +1,6 @@
 # qa-serverest-yuri-galdino
 
-This repository contains automated tests for the Serverest API and frontend. The tests are written using Robot Framework.
+This repository contains automated tests for the Serverest API and Front-End. The tests are written using Robot Framework.
 
 ## Prerequisites
 
@@ -23,7 +23,7 @@ pip install robotframework-collections
 
 ### Running All E2E Tests
 
-You can run all the available E2E tests with the following command:
+You can run all the available `E2E` tests with the following command:
 
 ```sh
 robot -i E2E <your path to the root of this project>
@@ -31,13 +31,16 @@ robot -i E2E <your path to the root of this project>
 
 Replace `<your path to the root of this project>` with the actual path to the root of this project.
 
-### Running Tests by Tags
+### Running All API Tests
 
-You can run tests by tags using the `-i` option. For example, to run all API tests:
+You can run all the available `API` tests with the following command:
 
 ```sh
-robot -i API <your path to the root of this project>/tests/API
+robot -i API <your path to the root of this project>
 ```
+
+Replace `<your path to the root of this project>` with the actual path to the root of this project.
+
 
 ### Running Individual Test Cases
 
@@ -69,24 +72,6 @@ Set `${HEADLESS}` to `True` for a headless run or `False` for a GUI run.
 ## Test Robustness and Resilience
 
 The test structure is designed with a certain level of robustness and resilience. If a user or admin does not exist in the database, or if the most recent token has expired, the tests are still capable of being executed. For GET, POST, and DELETE API tests, the code always checks the necessary conditions before performing the actions. For example, when deleting a product, if the product does not exist on the platform, it will be created first, and only then will the DELETE action be performed.
-
-## Example Commands
-
-### Running API Tests
-
-To run the API tests, use the following command:
-
-```sh
-robot -i API <your path to the root of this project>/tests/API
-```
-
-### Running Frontend Tests
-
-To run the frontend tests, use the following command:
-
-```sh
-robot -i FE <your path to the root of this project>/tests/FE
-```
 
 ## Contributing
 
