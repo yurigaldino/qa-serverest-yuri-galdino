@@ -76,3 +76,5 @@ The test structure is designed with a certain level of robustness and resilience
 ## Contributing
 
 If you would like to contribute to this project, please fork the repository and submit a pull request.
+##
+<p align="center"><img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ3hwYjl4YTQ3a2JrdnozcjRiaXZkaHFicmFja2dybHdvM2RoZHl6bCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZY2DmHSTFpmmEH5STD/giphy.gif" alt="this slowpoke moves"  width="480" /></p>
