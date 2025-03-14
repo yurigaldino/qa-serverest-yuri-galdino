@@ -15,3 +15,7 @@ ${PRODUCT_NAME}         Óculos Mormaii
 ${PRODUCT_PRICE}        199
 ${PRODUCT_DESCRIPTION}  Óculos de sol Mormaii cor preta
 ${PRODUCT_QUANTITY}     3
+${PRODUCT_ID}           None
+
+#Token
+${BEARER_TOKEN}         None

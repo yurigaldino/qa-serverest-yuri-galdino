@@ -4,8 +4,13 @@ Resource   ../../variables/api_locators.robot
 Library    Collections
 
 *** Keywords ***
+Disable Insecure Request Warnings
+    Evaluate    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+    #Usage only in dev mode
+
 Get Auth Token
     [Documentation]    Ensure the admin user exists and retrieve the authentication token
+    Disable Insecure Request Warnings
     Create Session    serverest    ${BASE_URL}
     ${payload}=    Create Dictionary    email=${ADMIN_EMAIL}    password=${ADMIN_PASSWORD}
     ${response}=    GET On Session    serverest    url=/usuarios    params=email=${ADMIN_EMAIL}
@@ -40,10 +45,11 @@ POST Product
     [Arguments]    ${TOKEN_POST}    ${payload}
     ${headers}=    Create Dictionary    Authorization=${TOKEN_POST}
     ${response}=   POST On Session    ${ALIAS_API}    ${PRODUCTS_ROUTE}    json=${payload}    headers=${headers}
-    Set Suite Variable      ${response}
     HTTP Response Status Code Should Be 201 OK      ${response}
+    Log To Console          **INFO: Product created with ID ${PRODUCT_ID}**
     ${PRODUCT_ID_JSON}=    Get From Dictionary      ${response.json()}    _id
-    Set Suite Variable      ${PRODUCT_ID}           ${PRODUCT_ID_JSON}
+    Set Suite Variable    ${PRODUCT_ID}           ${PRODUCT_ID_JSON}
+    RETURN    ${PRODUCT_ID_JSON}
 
 GET Product by ID
     [Documentation]    Get the product by ID
@@ -61,4 +67,25 @@ GET Product by ID
     # END
     ${response}=    GET On Session    ${ALIAS_API}    ${PRODUCTS_ROUTE}/${PRODUCT_ID}    headers=${headers}
     HTTP Response Status Code Should Be 200 OK    ${response}
+    Should Be Equal As Strings    ${response.json()['nome']}    ${PRODUCT_NAME}
+    Should Be Equal As Numbers    ${response.json()['preco']}    ${PRODUCT_PRICE}
+    Log To Console      **INFO: Got the Product ID ${PRODUCT_ID}**
     RETURN    ${response}
+
+DELETE Product by ID
+    [Documentation]    Get the product by ID
+    [Arguments]    ${TOKEN_GET}
+    ${headers}=    Create Dictionary    Authorization=${TOKEN_GET}
+    # Makes sure that product exists
+    # ${product_exists}=    Evaluate    len(${response.json()['usuarios']}) > 0
+    # IF    ${product_exists}
+    #     ${response}=    GET On Session    ${ALIAS_API}    ${PRODUCTS_ROUTE}/${PRODUCT_ID}    headers=${headers}
+    # ELSE
+    #     Given a new product payload
+    #     ${payload}=     Create Dictionary    nome=${PRODUCT_NAME}    preco=${PRODUCT_PRICE}    descricao=${PRODUCT_DESCRIPTION}    quantidade=${PRODUCT_QUANTITY}
+    #     When the product is added
+    #     Log To Console      **INFO: Product created with ID ${PRODUCT_ID}**
+    # END
+    ${response}=    DELETE On Session    ${ALIAS_API}    ${PRODUCTS_ROUTE}/${PRODUCT_ID}    headers=${headers}
+    HTTP Response Status Code Should Be 200 OK    ${response}
+    Log To Console      **INFO: Product with ID ${PRODUCT_ID} deleted**
