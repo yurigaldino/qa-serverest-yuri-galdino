@@ -27,8 +27,11 @@ Check Product in Products List after Creation
     [Documentation]    Check if the product is in the products list  
     [Arguments]     ${new_random_product_name}
     ${product_exists}=    Run Keyword And Return Status    Wait Until Element Is Visible    xpath=//td[text()='${new_random_product_name}']    10s
-    Run Keyword If    not ${product_exists}    Fail    **ERROR: Product ${new_random_product_name} not found in the list**
-    Log To Console    **INFO: Product ${new_random_product_name} found in the list**
+    IF    ${product_exists}
+        Log To Console    **INFO: Product ${new_random_product_name} found in the list**
+    ELSE
+        Fail    **ERROR: Product ${new_random_product_name} not found in the list**
+    END
 
 User Goes to Admin Add Product Page
     Go To           ${ADMIN_ADD_PRODUCT_URl}

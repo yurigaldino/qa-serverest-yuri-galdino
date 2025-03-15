@@ -80,5 +80,5 @@ User Ensures That Admin Exists
     Click Button    ${sign_up_submit_button}
     ${admin_existence}=  Run Keyword And Return Status    Wait Until Element Is Visible   ${sign_up_email_already_in_use_alert_span}    3s
     ${admin_creation}=   Run Keyword And Return Status    Wait Until Element Is Visible   ${sign_up_email_success_span}    3s
-    Run Keyword If  ${admin_existence}   Log To Console    **INFO: Admin email already exists -> Login ready to proceed**
-    Run Keyword If  ${admin_creation}    Log To Console    **INFO: ${admin_name} was created with ${admin_email} -> Login ready to proceed**
+    Run Keyword If  ${admin_existence}   Log To Console    **INFO ACCESS: Admin email already exists -> Login ready to proceed**
+    Run Keyword If  ${admin_creation}    Log To Console    **INFO ACCESS: ${admin_name} was created with ${admin_email} -> Login ready to proceed**
