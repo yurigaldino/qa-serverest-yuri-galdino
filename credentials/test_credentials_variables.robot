@@ -1,6 +1,8 @@
 *** Variables ***
 
-#Credentials
+#Test Credentials (data is mocked since is a open testing environment, be careful with real data)
+#This structure were chosen to make it more simple for everyone to run the tests
+#If you want to use real data, please use the environment variables
 ${USER_NAME}            Yuri Galdino Test User
 ${USER_EMAIL}           yurig@test.com
 ${USER_PASSWORD}        123
