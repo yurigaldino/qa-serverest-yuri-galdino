@@ -6,7 +6,7 @@ Resource   ../../variables/web_locators.robot
 Set up a new random product              
     [Documentation]    Set up a new random product
     User Goes to Admin Add Product Page
-    ${new_random_product_name}=    Generate Random Name
+    ${new_random_product_name}=    Generate Random Product Name
     ${new_random_product_price}=    Generate Random Price
     ${new_random_product_description}=    Generate Random Description
     ${new_random_product_quantity}=    Generate Random Quantity 
@@ -29,26 +29,6 @@ Check Product in Products List after Creation
     ${product_exists}=    Run Keyword And Return Status    Wait Until Element Is Visible    xpath=//td[text()='${new_random_product_name}']    10s
     Run Keyword If    not ${product_exists}    Fail    **ERROR: Product ${new_random_product_name} not found in the list**
     Log To Console    **INFO: Product ${new_random_product_name} found in the list**
-
-Generate Random Price
-    [Documentation]    Generates a random price
-    ${random_price}=    Evaluate    random.randint(1000, 9999)    random
-    RETURN    ${random_price}
-
-Generate Random Description
-    [Documentation]    Generates a random description
-    ${random_description}=    Evaluate    "YuriRandomDescription" + str(random.randint(1000, 9999))    random
-    RETURN    ${random_description}
-
-Generate Random Name
-    [Documentation]    Generates a random name
-    ${random_name}=    Evaluate    "YuriRandomProduct" + str(random.randint(1000, 9999))    random
-    RETURN    ${random_name}
-
-Generate Random Quantity 
-    [Documentation]    Generates a random quantity
-    ${random_quantity}=    Evaluate    random.randint(1, 100)    random
-    RETURN    ${random_quantity}
 
 User Goes to Admin Add Product Page
     Go To           ${ADMIN_ADD_PRODUCT}
