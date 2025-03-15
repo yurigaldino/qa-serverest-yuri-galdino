@@ -31,5 +31,5 @@ Check Product in Products List after Creation
     Log To Console    **INFO: Product ${new_random_product_name} found in the list**
 
 User Goes to Admin Add Product Page
-    Go To           ${ADMIN_ADD_PRODUCT}
+    Go To           ${ADMIN_ADD_PRODUCT_URl}
     Wait Until Element Is Visible               ${admin_product_name_input}
