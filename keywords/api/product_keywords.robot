@@ -16,7 +16,7 @@ Get Auth Token
     ${response}=    GET On Session    serverest    url=/usuarios    params=email=${ADMIN_EMAIL}
     ${user_exists}=    Evaluate    len(${response.json()['usuarios']}) > 0
     IF    ${user_exists}
-        Log To Console    **INFO: Admin user already exists, ready to proceed with Auth Token generation**
+        Log To Console    **INFO ACCESS: Admin user already exists, ready to proceed with Auth Token generation**
     ELSE
         Create Admin User
     END
@@ -30,8 +30,8 @@ Create Admin User
     ${payload}=    Create Dictionary    nome=${ADMIN_NAME}    email=${ADMIN_EMAIL}    password=${ADMIN_PASSWORD}    administrador=true
     ${response}=    POST On Session    serverest    /usuarios    json=${payload}
     ${message}=    Get From Dictionary    ${response.json()}    message
-    Run Keyword If    '${message}' == 'Cadastro realizado com sucesso'    Log To Console    **INFO: Admin user created successfully**
-    Run Keyword If    '${message}' == 'Este email já está sendo usado'    Log To Console    **INFO: Cannot create, Admin user already exists**
+    Run Keyword If    '${message}' == 'Cadastro realizado com sucesso'    Log To Console    **INFO ACCESS: Admin user created successfully**
+    Run Keyword If    '${message}' == 'Este email já está sendo usado'    Log To Console    **INFO ACCESS: Cannot create, Admin user already exists**
 
 Adds a New Product Payload
     [Documentation]    Create a payload for a new product
