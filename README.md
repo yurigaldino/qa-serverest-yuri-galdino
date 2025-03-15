@@ -50,6 +50,8 @@ You can run individual test cases using the `-t` option. For example, to run a s
 robot -t "Name of The Test Case" <file.robot>
 ```
 
+You need to be in the same folder of the mentioned file.robot in order to work.
+
 ### Headless or GUI Run
 
 It is possible to choose between a headless run or the common GUI run by changing the `HEADLESS` variable in `variables/project_variables.robot`:

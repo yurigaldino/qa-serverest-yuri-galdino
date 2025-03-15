@@ -39,7 +39,7 @@ Adds a New Product Payload
     RETURN      ${payload}
 
 Check if Product Exists by Product Name
-    [Documentation]    Check if the product exists by name
+    [Documentation]    Check if the product exists by name and set the product ID if it does
     [Arguments]    ${TOKEN_GET}
     ${headers}=    Create Dictionary    Authorization=${TOKEN_GET}
     ${params}=    Create Dictionary    nome=${PRODUCT_NAME}
@@ -55,12 +55,14 @@ Check if Product Exists by Product Name
     RETURN    ${product_exists}
 
 Delete Product If Exists By ID    
+    [Documentation]    Delete the product if it exists
     [Arguments]     ${product_existance}     ${BEARER_TOKEN}
     IF    ${product_existance}
         DELETE Product by ID    ${BEARER_TOKEN}
     END
 
 GET or Create Product by ID due to Existance
+    [Documentation]    Get the product by ID or create it if it does not exist
     [Arguments]     ${product_existance}    ${BEARER_TOKEN}
     IF    not ${product_existance}
         ${product_payload}=     Adds a new product payload 
@@ -69,6 +71,7 @@ GET or Create Product by ID due to Existance
     ${response}=            GET Product by ID                   ${BEARER_TOKEN}
 
 DELETE or Create Product by ID due to Existance
+    [Documentation]    Get the product by ID or create it if it does not exist
     [Arguments]     ${product_existance}    ${BEARER_TOKEN}
     IF    not ${product_existance}
         ${product_payload}=     Adds a new product payload 
@@ -91,16 +94,6 @@ GET Product by ID
     [Documentation]    Get the product by ID
     [Arguments]    ${TOKEN_GET}    ${current_product_id}=${PRODUCT_ID}
     ${headers}=    Create Dictionary    Authorization=${TOKEN_GET}
-    # Makes sure that product exists
-    # ${product_exists}=    Evaluate    len(${response.json()['usuarios']}) > 0
-    # IF    ${product_exists}
-    #     ${response}=    GET On Session    ${ALIAS_API}    ${PRODUCTS_ROUTE}/${PRODUCT_ID}    headers=${headers}
-    # ELSE
-    #     Given a new product payload
-    #     ${payload}=     Create Dictionary    nome=${PRODUCT_NAME}    preco=${PRODUCT_PRICE}    descricao=${PRODUCT_DESCRIPTION}    quantidade=${PRODUCT_QUANTITY}
-    #     When the product is added
-    #     Log To Console      **INFO: Product created with ID ${PRODUCT_ID}**
-    # END
     ${response}=    GET On Session    ${ALIAS_API}    ${PRODUCTS_ROUTE}/${current_product_id}    headers=${headers}
     HTTP Response Status Code Should Be 200 OK    ${response}
     Should Be Equal As Strings    ${response.json()['nome']}    ${PRODUCT_NAME}
@@ -112,16 +105,6 @@ DELETE Product by ID
     [Documentation]    Get the product by ID
     [Arguments]    ${TOKEN_GET}    ${current_product_id}=${PRODUCT_ID}
     ${headers}=    Create Dictionary    Authorization=${TOKEN_GET}
-    # Makes sure that product exists
-    # ${product_exists}=    Evaluate    len(${response.json()['usuarios']}) > 0
-    # IF    ${product_exists}
-    #     ${response}=    GET On Session    ${ALIAS_API}    ${PRODUCTS_ROUTE}/${PRODUCT_ID}    headers=${headers}
-    # ELSE
-    #     Given a new product payload
-    #     ${payload}=     Create Dictionary    nome=${PRODUCT_NAME}    preco=${PRODUCT_PRICE}    descricao=${PRODUCT_DESCRIPTION}    quantidade=${PRODUCT_QUANTITY}
-    #     When the product is added
-    #     Log To Console      **INFO: Product created with ID ${PRODUCT_ID}**
-    # END
     ${response}=    DELETE On Session    ${ALIAS_API}    ${PRODUCTS_ROUTE}/${current_product_id}    headers=${headers}
     HTTP Response Status Code Should Be 200 OK    ${response}
     Log To Console      **INFO: Product with ID ${current_product_id} deleted**

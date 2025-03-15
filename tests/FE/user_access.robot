@@ -25,24 +25,24 @@ Admin Successful Login
     When user ensures that admin exists     ${ADMIN_NAME}  ${ADMIN_EMAIL}   ${ADMIN_PASSWORD}
     And user goes to sign in page
     And user login                          ${ADMIN_EMAIL}   ${ADMIN_PASSWORD}
-    Then Wait Until Element Is Visible           ${home_admin_subtitle_p}    10s
+    Then Wait Until Element Is Visible      ${home_admin_subtitle_p}    10s
 
 Login with Invalid Email
     [Documentation]    Test login with an invalid email
-    When user login                         user@notsigned.up   123
+    When user login                         ${BAD_FORMATTED_EMAIL}   ${USER_PASSWORD}
     Then Wait Until Element Is Visible      ${login_invalid_email_alert_span}    10s
 
 Login with Invalid Password
     [Documentation]    Test login with an invalid password
-    When user login                         test@test.com   butPasswordIsWrong
+    When user login                         ${OK_FORMATTED_EMAIL}   ${WRONG_PASSWORD}
     Then Wait Until Element Is Visible      ${login_invalid_email_or_password_alert_span}    10s
 
 Login Without Email
     [Documentation]    Test login without an email
-    When user login                         ${EMPTY}    123
+    When user login                         ${EMPTY}    ${USER_PASSWORD}
     Then Wait Until Element Is Visible      ${login_without_email_alert_span}    10s
 
 Login Without Password
     [Documentation]    Test login without a password
-    When user login                         test@test.com    ${EMPTY}
+    When user login                         ${OK_FORMATTED_EMAIL}    ${EMPTY}
     Then Wait Until Element Is Visible      ${login_without_password_alert_span}    10s
